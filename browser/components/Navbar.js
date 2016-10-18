@@ -71,12 +71,13 @@ class Navbar extends React.Component {
 
 /* -----------------    CONTAINER     ------------------ */
 
+import { logoutUserAsync } from '../redux/auth';
+
 const mapProps = null;
 
 const mapDispatch = dispatch => ({
   logout: () => {
-    console.log('You signed out. Sorta.')
-    browserHistory.push('/');
+    dispatch(logoutUserAsync());
   }
 })
 

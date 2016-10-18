@@ -7,7 +7,7 @@ export const setCurrentUser = user => ({type: SET_CURRENT_USER, user});
 
 export const loginUserAsync = authInfo => 
 	dispatch => {
-	fetch('/login', {
+	fetch('/auth/login', {
 		method: 'POST',
 		body: JSON.stringify(authInfo)
 	})
@@ -24,7 +24,7 @@ export const loginUserAsync = authInfo =>
 
 export const signupUserAsync = authInfo => 
 	dispatch => {
-	fetch('/signup', {
+	fetch('/auth/signup', {
 		method: 'POST',
 		body: JSON.stringify(authInfo)
 	})
@@ -37,6 +37,26 @@ export const signupUserAsync = authInfo =>
 	})
 	.catch(console.error);
 };
+
+export const logoutUserAsync = () => 
+	dispatch => {
+	fetch('/auth/logout')
+	.then(res => {
+		if (res.ok) dispatch(setCurrentUser({}))	
+		else throw new Error('There was a problem logging you out.');
+	})
+	.catch(console.error);
+};
+
+export const retrieveLoggedInUser = () => dispatch => {
+  fetch('/auth/me')
+  .then(res => {
+  	if (res.ok) return res.json();
+  	else throw new Error();
+  })
+  .then(user => dispatch(setCurrentUser(user)))
+  .catch(err => console.error('retrieveLoggedInUser unsuccesful', err));
+}
 
 // REDUCER
 export default (state = {}, action) => {
